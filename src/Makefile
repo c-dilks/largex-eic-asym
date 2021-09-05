@@ -1,8 +1,8 @@
 include ../config.mk
 
 # rootcling dictionary
-DICT := $(LARGEX)Dict.cxx
-PCM := $(LARGEX)Dict_rdict.pcm
+DICT := $(LARGEXASYM)Dict.cxx
+PCM := $(LARGEXASYM)Dict_rdict.pcm
 LINKDEF = LinkDef.h
 
 
@@ -14,14 +14,15 @@ HEADERS := $(filter-out $(LINKDEF), $(wildcard *.h)) $(LINKDEF)
 #-----------------------------------------------
 
 
-$(LARGEXOBJ): $(DICT) $(HEADERS) $(SOURCES)
+$(LARGEXASYMOBJ): $(DICT) $(HEADERS) $(SOURCES)
 	@echo "----- build $@ -----"
 	$(CXX) $(SOURCES) -shared -o ../$@ $(FLAGS) $(DEPS) $(LIBS)
 
 $(DICT): $(HEADERS)
 	@echo "----- generate dictionary $@ -----"
-	@rootcling -f $@ $(DEPS) $^
+	@echo "WARNING: -Wno-defaulted-function-deleted is used to silence brufit warnings"
+	@rootcling -f $@ -Wno-defaulted-function-deleted $(DEPS) $^
 	mv $(PCM) ../
 
 clean:
-	$(RM) ../$(LARGEXOBJ) $(DICT) ../$(PCM)
+	$(RM) ../$(LARGEXASYMOBJ) $(DICT) ../$(PCM)

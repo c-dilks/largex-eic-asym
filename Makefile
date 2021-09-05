@@ -1,9 +1,8 @@
 include config.mk
 
-
 # local dependencies
 DEPS += -Isrc
-#LIBS += -L. -l$(LARGEX)
+#LIBS += -L. -l$(LARGEXASYM)
 
 
 # assume each .cpp file has main and build corresponding .exe executable
@@ -22,7 +21,7 @@ exe: $(EXES)
 
 %.exe: %.o
 	@echo "--- make executable $@"
-	$(CXX) -o $@ $< ./$(LARGEXOBJ) $(LIBS)
+	$(CXX) -o $@ $< ./$(LARGEXASYMOBJ) $(LIBS)
 
 %.o: %.cpp
 	@echo "----- build $@ -----"

@@ -22,5 +22,5 @@ DEPS += -I$(BRUFIT)/core
 LIBS += -L$(BRUFIT)/lib -lbrufit
 
 # shared object name and source directory
-LARGEXASYM = Largex
+LARGEXASYM = LargexAsym
 LARGEXASYMOBJ := lib$(LARGEXASYM).so

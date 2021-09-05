@@ -5,14 +5,10 @@
 #include "TMath.h"
 
 // pi
-// ---------------------------------------------------
 static Double_t PI = TMath::Pi();
 static Double_t PIe = TMath::Pi() + 0.3;
 
 // undefined constant
 static Double_t UNDEF = -10000;
-
-// useful enumerators
-enum xyz_enum { eX, eY, eZ };
 
 #endif

@@ -33,7 +33,6 @@
 #include "Constants.h"
 #include "Tools.h"
 #include "Modulation.h"
-#include "Binning.h"
 
 
 class BruAsymmetry : public TObject
@@ -47,7 +46,7 @@ class BruAsymmetry : public TObject
     void BuildPDF();
     void LoadDataSets(
       TString dataFileN, TString mcFileN="", TString treename="tree");
-    void Bin(Binning * binscheme);
+    void Bin(TString varName, Int_t nBins, Double_t *binsArray);
     void Fit();
     void PrintFitter() { FM->SetUp().WS().Print("v"); };
 

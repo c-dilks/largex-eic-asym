@@ -18,12 +18,10 @@ BruAsymmetry::BruAsymmetry(TString outdir_, TString minimizer_)
 
   // variables
   FM->SetUp().LoadVariable(TString("PhiH")+Form("[%f,%f]",-PIe,PIe));
-  FM->SetUp().LoadVariable(TString("PhiR")+Form("[%f,%f]",-PIe,PIe));
-  FM->SetUp().LoadVariable(TString("PhiD")+Form("[%f,%f]",-PIe,PIe));
-  FM->SetUp().LoadVariable(TString("Theta")+Form("[%f,%f]",-0.1,PIe));
+  FM->SetUp().LoadVariable(TString("PhiS")+Form("[%f,%f]",-PIe,PIe));
   FM->SetUp().LoadVariable(TString("Pol")+Form("[%f,%f]",-1.0,1.0));
-  FM->SetUp().LoadVariable(TString("Depol2")+Form("[%f,%f]",0.0,2.5));
-  FM->SetUp().LoadVariable(TString("Depol3")+Form("[%f,%f]",0.0,2.5));
+  //FM->SetUp().LoadVariable(TString("Depol2")+Form("[%f,%f]",0.0,2.5)); // TODO: not yet in SimpleTree
+  //FM->SetUp().LoadVariable(TString("Depol3")+Form("[%f,%f]",0.0,2.5));  // TODO: not yet in SimpleTree
 
   // category for spin
   FM->SetUp().LoadCategory(
@@ -32,7 +30,6 @@ BruAsymmetry::BruAsymmetry(TString outdir_, TString minimizer_)
   // unique ID variable
   FM->SetUp().SetIDBranchName("Idx");
 
-
   // default MCMC settings
   MCMC_iter = 1000;
   MCMC_burnin = 200;
@@ -40,7 +37,6 @@ BruAsymmetry::BruAsymmetry(TString outdir_, TString minimizer_)
   MCMC_cov_iter = 1000;
   MCMC_cov_burnin = 200;
   MCMC_cov_norm = 200;
-
 
   // misc vars
   numerList = "";
@@ -69,11 +65,12 @@ void BruAsymmetry::AddNumerMod(Modulation * modu) {
   // determine which depolarization factor to use
   // - assumes LU, or DSIDIS twist 2
   TString depolVar;
-  switch(modu->GetTw()) {
-    case 2: depolVar = "@Depol2[]"; break;
-    case 3: depolVar = "@Depol3[]"; break;
+  switch(modu->GetTwist()) {
+    // TODO: not yet in SimpleTree
+    //case 2: depolVar = "@Depol2[]"; break;
+    //case 3: depolVar = "@Depol3[]"; break;
     default: 
-      fprintf(stderr,"unknown depolarization factor; setting to 1\n");
+      fprintf(stderr,"WARNING: unknown depolarization factor; setting to 1\n");
       depolVar = "1";
   };
 
@@ -130,7 +127,9 @@ void BruAsymmetry::AddDenomMod(Modulation * modu) {
 void BruAsymmetry::BuildPDF() {
 
   // build PDFstr
-  TString obsList = "PhiH,PhiR,PhiD,Theta,Pol,Depol2,Depol3,Spin_idx";
+  fprintf(stderr,"WARNING: depolarization factors not included in obsList (todo when depolarization is included)\n");
+  //TString obsList = "PhiH,PhiS,Pol,Depol2,Depol3,Spin_idx"; // TODO depolarization not yet in SimpleTree
+  TString obsList = "PhiH,PhiS,Pol,Spin_idx";
   if(nDenomParams==0) {
     // if PDF has numerator amplitudes only, we can use RooComponentsPDF
     PDFstr = "RooComponentsPDF::PWfit(1,"; // PDF class::name ("+1" term ,
@@ -157,9 +156,7 @@ void BruAsymmetry::BuildPDF() {
 };
 
 
-// load data and MC events into FitManager, by converting RooDataSets to
-// disk-resident TTrees
-// - RooDataSets expected to be from Asymmetry::rfData
+// load data and MC events from SimpleTree into FitManager
 void BruAsymmetry::LoadDataSets(
   TString dataFileN, TString mcFileN, TString treename
 ) {
@@ -210,15 +207,8 @@ void BruAsymmetry::LoadDataSets(
 
 
 // bin the data (and MC) according to specified binning scheme
-// ( see Binning::SetScheme )
-void BruAsymmetry::Bin(Binning * binscheme) {
-  for(int d=0; d<binscheme->dimensions; d++) {
-    FM->Bins().LoadBinVar(
-      binscheme->GetIVname(d),
-      binscheme->GetNbins(d),
-      binscheme->GetBinArray(d)->GetArray()
-    );
-  };
+void BruAsymmetry::Bin(TString varName, Int_t nBins, Double_t *binsArray) {
+  FM->Bins().LoadBinVar(varName,nBins,binsArray);
 };
 
 // perform the fit

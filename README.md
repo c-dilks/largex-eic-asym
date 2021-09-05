@@ -14,3 +14,5 @@
   - `cmake ../` (again, for pcm file)
   - `make install`
   - `popd`
+- build Largex-eic-asym
+  - `make` (make sure `env.sh` has been sourced)

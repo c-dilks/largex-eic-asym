@@ -6,7 +6,6 @@
 
 #pragma link C++ class Tools+;
 #pragma link C++ class Modulation+;
-#pragma link C++ class Asymmetry+;
 #pragma link C++ class BruAsymmetry+;
 
 #endif

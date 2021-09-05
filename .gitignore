@@ -1,0 +1,8 @@
+.*.sw*
+*.hepmc*
+*.root
+*.pcm
+*.so
+*.exe
+*.png
+*Dict.cxx

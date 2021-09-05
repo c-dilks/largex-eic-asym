@@ -5,5 +5,5 @@
 *.so
 *.exe
 *.png
+*.log
 *Dict.cxx
-j

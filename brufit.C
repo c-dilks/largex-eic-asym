@@ -12,7 +12,7 @@ R__LOAD_LIBRARY(LargexAsym)
  *     subsequent mcmc walk
  */
 
-void asymBruFit(TString bruDir="bruspin", TString minimizer="minuit") {
+void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
 
   // load macros needed for PROOF
   // - if you prefer not to use PROOF, adjust `HS::FIT::...::Go` calls in `BruAsymmetry::Fit`
@@ -34,15 +34,16 @@ void asymBruFit(TString bruDir="bruspin", TString minimizer="minuit") {
   B->BuildPDF();
 
   // set binning scheme
+  Double_t xbins[6] = { 0.0, 0.2, 0.4, 0.6, 0.8, 1.0 };
   B->Bin(
       "X", // branch name in SimpleTree
       5, // number of bins
-      { 0.0, 0.2, 0.4, 0.6, 0.8, 1.0 } // bin boundaries (NOTE: size = number_of_bins + 1)
+      xbins // bin boundaries (NOTE: size = number_of_bins + 1)
       );
 
   // load SimpleTrees
   B->LoadDataSets(
-      "data/simpleTree.root", // data to fit
+      "data/yRatio.example_5x41.root", // data to fit
       "" // unpolarized MC data for likelihood normalization / acceptance correction (not used if unspecified)
       );
 

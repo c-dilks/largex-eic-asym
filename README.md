@@ -16,3 +16,12 @@
   - `popd`
 - build Largex-eic-asym
   - `make` (make sure `env.sh` has been sourced)
+
+## Usage
+
+- `source env.sh`
+- put a `root` file with a `SimpleTree` TTree in `data/` (or anywhere you want)
+- edit `brufit.C` and run; output will appear in specified `bruDir`
+- run `errorPrintProof.sh` to quickly check log files (though
+  it may confuse uncertainty reports for errors...)
+- TODO: asymmetry plotting code

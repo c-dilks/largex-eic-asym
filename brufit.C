@@ -43,7 +43,7 @@ void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
 
   // load SimpleTrees
   B->LoadDataSets(
-      "../largex-eic/out/test.simple.tree.example_5x41.root", // data to fit
+      "../out/test.simple.tree.example_5x41.root", // data to fit
       "" // unpolarized MC data for likelihood normalization / acceptance correction (not used if unspecified)
       );
 

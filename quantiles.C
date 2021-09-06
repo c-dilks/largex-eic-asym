@@ -18,12 +18,12 @@ TLine * l;
 void quantiles(
   Int_t Nquant_=6,
   TString constraint_="",
-  TString catTreeFile="../largex-eic/out/test.simple.tree.example_5x41.root"
+  TString treeFile="../out/test.simple.tree.example_5x41.root"
 ) {
   Nquant = Nquant_;
   constraint = constraint_;
   if(Nquant>N) { fprintf(stderr,"ERROR: Nquant too big\n"); return; }
-  f = new TFile(catTreeFile,"READ");
+  f = new TFile(treeFile,"READ");
   t = (TTree*) f->Get("tree");
 
   PrintNums("X");

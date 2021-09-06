@@ -6,7 +6,7 @@ export BRUFIT=${LARGEXASYM_HOME}/deps/brufit
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${BRUFIT}/lib
 
 # PROOF logs (your path may be different)
-jobdir=$(echo $LARGEXASYM_HOME | sed 's,'"$HOME/"',,' | sed 's,\/,-,')
+jobdir=$(echo $LARGEXASYM_HOME | sed 's,'"$HOME/"',,' | sed 's,\/,-,g')
 export PROOF_LOG=${HOME}/.proof/${jobdir}/last-lite-session
 
 # print results

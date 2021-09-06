@@ -2,11 +2,19 @@
 
 ClassImp(Modulation)
 
-// constructor
+// primary constructor
 Modulation::Modulation(Int_t ID_, Int_t polarization_)
   : ID(ID_)
   , polarization(polarization_)
 { Initialize(); };
+
+
+// alternative constructor, for parsing BruAsymmetry 
+// formatted amplitude names
+Modulation::Modulation(TString ampStr) {
+  sscanf(ampStr,"AmpP%dI%d",&polarization,&ID);
+  Initialize();
+};
 
 
 // build formula (called by the constructor)
@@ -15,11 +23,11 @@ void Modulation::Initialize() {
   baseStr = "0";
   if(polarization==kUT) {
     switch(ID) {
-      case  0:  baseStr="sin(phiH-phiS)";    twist=2;  break;
-      case  1:  baseStr="sin(phiH+phiS)";    twist=2;  break;
-      case  2:  baseStr="sin(3*phiH-phiS)";  twist=2;  break;
-      case  3:  baseStr="sin(phiS)";         twist=3;  break;
-      case  4:  baseStr="sin(2*phiH-phiS)";  twist=3;  break;
+      case  0:  baseStr="sin(phiH-phiS)";    twist=2;  polT="UT,T";  break;
+      case  1:  baseStr="sin(phiH+phiS)";    twist=2;  polT="UT";    break;
+      case  2:  baseStr="sin(3*phiH-phiS)";  twist=2;  polT="UT";    break;
+      case  3:  baseStr="sin(phiS)";         twist=3;  polT="UT";    break;
+      case  4:  baseStr="sin(2*phiH-phiS)";  twist=3;  polT="UT";    break;
     };
   }
   //else if(polarization==kLL) { ... };
@@ -47,6 +55,14 @@ TString Modulation::AmpName() {
 TString Modulation::ModulationTitle() {
   TString retstr = baseStr;
   retstr.ReplaceAll("phi","#phi");
+  return retstr;
+};
+
+
+// asymmetry title
+TString Modulation::AsymmetryTitle() {
+  TString retstr = 
+    "A_{"+PolarizationTitle()+"}["+ ModulationTitle()+"]";
   return retstr;
 };
 

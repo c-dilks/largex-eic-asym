@@ -20,12 +20,15 @@ class Modulation : public TObject
 
     Modulation(Int_t ID_, 
                Int_t polarization_ = kUT);
+    Modulation(TString ampStr);
     ~Modulation();
 
     void Initialize();
     TString FormuBru();
     TString AmpName();
     TString ModulationTitle();
+    TString PolarizationTitle() { return polT; };
+    TString AsymmetryTitle();
 
     Int_t GetTwist() { return twist; };
     TString GetBaseString() { return baseStr; };
@@ -34,6 +37,7 @@ class Modulation : public TObject
     TString baseStr,formuStr;
     Int_t twist,ID;
     Int_t polarization;
+    TString polT;
 
   ClassDef(Modulation,1);
 };

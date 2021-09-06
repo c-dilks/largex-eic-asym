@@ -22,6 +22,8 @@
 - `source env.sh`
 - put a `root` file with a `SimpleTree` TTree in `data/` (or anywhere you want)
 - edit `brufit.C` and run; output will appear in specified `bruDir`
-- run `errorPrintProof.sh` to quickly check log files (though
+  - use `quantiles.C` to help define binning
+- run `errorCheck.sh` to quickly check PROOF log files (though
   it may confuse uncertainty reports for errors...)
+  - if you don't use PROOF, inspect `stdout`
 - TODO: asymmetry plotting code

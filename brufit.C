@@ -33,17 +33,17 @@ void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
   // build full PDF
   B->BuildPDF();
 
-  // set binning scheme
-  Double_t xbins[6] = { 0.0, 0.2, 0.4, 0.6, 0.8, 1.0 };
-  B->Bin(
-      "X", // branch name in SimpleTree
-      5, // number of bins
-      xbins // bin boundaries (NOTE: size = number_of_bins + 1)
-      );
+  // set binning scheme (see quantiles.C)
+  // - bin boundaries (size = number_of_bins + 1)
+  Double_t Xbins[7] = { 0.050, 0.061, 0.076, 0.094, 0.119, 0.172, 0.820 };
+  // - bin schemes (2nd argument = number_of_bins)
+  B->Bin("X",6,Xbins);
+  // - check binning definition
+  B->PrintBinScheme();
 
   // load SimpleTrees
   B->LoadDataSets(
-      "data/yRatio.example_5x41.root", // data to fit
+      "../largex-eic/out/test.simple.tree.example_5x41.root", // data to fit
       "" // unpolarized MC data for likelihood normalization / acceptance correction (not used if unspecified)
       );
 

@@ -68,11 +68,8 @@ void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
   gROOT->ProcessLine(".! mcmcAcceptanceRate.sh");
   gSystem->RedirectOutput(0);
 
-  // TODO: need new draw script
   // draw
-  /*
-  TString cmd = Form(".x drawBru.C(\"%s\",\"%s\")",bruDir.Data(),minimizer.Data());
+  TString cmd = Form(".x draw.C(\"%s\",\"%s\")",bruDir.Data(),minimizer.Data());
   printf("\nEXECUTE: %s\n\n",cmd.Data());
   gROOT->ProcessLine(cmd);
-  */
 };

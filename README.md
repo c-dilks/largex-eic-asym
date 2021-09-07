@@ -21,9 +21,23 @@
 
 - `source env.sh`
 - put a `root` file with a `SimpleTree` TTree in `data/` (or anywhere you want)
-- edit `brufit.C` and run; output will appear in specified `bruDir`
-  - use `quantiles.C` to help define binning
-- run `errorCheck.sh` to quickly check PROOF log files (though
-  it may confuse uncertainty reports for errors...)
-  - if you don't use PROOF, inspect `stdout`
-- TODO: asymmetry plotting code
+- edit `brufit.C` and run
+  - specify a directory name for output files
+  - use `quantiles.C` to help define binning, if you want quantile binning
+  - specify which modulations you want to simultaneously fit for; see `Modulation`
+    class for more information
+  - there are three minimizers available:
+    - `minuit` uses Minuit MIGRAD to search for the maximum likelihood
+    - `mcmc` uses Metropolis-Hastings Markov Chain Monte Carlo to sample the posterior
+      near the likelihood
+    - `mcmcthencov` uses the covariance from one MCMC as guidance for a second
+  - uses PROOF for multithreading (one bin = one job); see `BruAsymmetry::Fit`
+    to disable PROOF and run single-threaded
+- run `errorCheck.sh` to grep for errors in PROOF log files
+  - if you don't use PROOF, check `stdout` for errors
+  - don't get confused by uncertainty reports
+  - some errors are benign
+  - make sure `$PROOF_LOG` is correctly set for your system in `env.sh`
+- run `draw.C`
+  - a new root file will appear in the output directory, containing the fit
+    results, along with several other plots

@@ -29,6 +29,9 @@ void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
   // - see `Modulation::Initialize` for the full set of available modulations
   B->AddNumerMod(new Modulation(0,Modulation::kUT)); // sin(phiH-phiS)
   B->AddNumerMod(new Modulation(1,Modulation::kUT)); // sin(phiH+phiS)
+  B->AddNumerMod(new Modulation(2,Modulation::kUT));
+  B->AddNumerMod(new Modulation(3,Modulation::kUT));
+  B->AddNumerMod(new Modulation(4,Modulation::kUT));
 
   // build full PDF
   B->BuildPDF();
@@ -43,7 +46,7 @@ void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
 
   // load SimpleTrees
   B->LoadDataSets(
-      "../out/test.simple.tree.example_5x41.root", // data to fit
+      "../out/asym.root", // data to fit
       "" // unpolarized MC data for likelihood normalization / acceptance correction (not used if unspecified)
       );
 

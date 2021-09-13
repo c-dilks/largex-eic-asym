@@ -15,3 +15,5 @@ env|grep --color -w BRUFIT
 env|grep --color -w LD_LIBRARY_PATH
 env|grep --color -w PROOF_LOG
 
+# brufit alias
+alias brufit="root $BRUFIT/macros/LoadBru.C"

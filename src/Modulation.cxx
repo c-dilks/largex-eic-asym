@@ -21,13 +21,20 @@ Modulation::Modulation(TString ampStr) {
 // see [hep-ph/0611265] and [1807.10606 t.o.c.]
 void Modulation::Initialize() {
   baseStr = "0";
+
+  /* define modulation properties:
+   * - `baseStr`: modulation formula string
+   * - `twist`: twist of associated structure function
+   * - `polT`: polarization title (which may include more than just the polarizations)
+   * - `depol`: associated depolarization factor ratio p0,p1,p2,p3,p4, from [1807.10606 eq. 2.3], where p0=1
+   */
   if(polarization==kUT) {
     switch(ID) {
-      case  0:  baseStr="sin(phiH-phiS)";    twist=2;  polT="UT,T";  break;
-      case  1:  baseStr="sin(phiH+phiS)";    twist=2;  polT="UT";    break;
-      case  2:  baseStr="sin(3*phiH-phiS)";  twist=2;  polT="UT";    break;
-      case  3:  baseStr="sin(phiS)";         twist=3;  polT="UT";    break;
-      case  4:  baseStr="sin(2*phiH-phiS)";  twist=3;  polT="UT";    break;
+      case  0:  baseStr="sin(phiH-phiS)";    twist=2;  polT="UT,T";  depol=0;  break;
+      case  1:  baseStr="sin(phiH+phiS)";    twist=2;  polT="UT";    depol=1;  break;
+      case  2:  baseStr="sin(3*phiH-phiS)";  twist=2;  polT="UT";    depol=1;  break;
+      case  3:  baseStr="sin(phiS)";         twist=3;  polT="UT";    depol=3;  break;
+      case  4:  baseStr="sin(2*phiH-phiS)";  twist=3;  polT="UT";    depol=3;  break;
     };
   }
   //else if(polarization==kLL) { ... };

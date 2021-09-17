@@ -20,8 +20,8 @@ BruAsymmetry::BruAsymmetry(TString outdir_, TString minimizer_)
   FM->SetUp().LoadVariable(TString("PhiH")+Form("[%f,%f]",-PIe,PIe));
   FM->SetUp().LoadVariable(TString("PhiS")+Form("[%f,%f]",-PIe,PIe));
   FM->SetUp().LoadVariable(TString("Pol")+Form("[%f,%f]",-1.0,1.0));
-  //FM->SetUp().LoadVariable(TString("Depol2")+Form("[%f,%f]",0.0,2.5)); // TODO: not yet in SimpleTree
-  //FM->SetUp().LoadVariable(TString("Depol3")+Form("[%f,%f]",0.0,2.5));  // TODO: not yet in SimpleTree
+  for(int dp=1; dp<=4; dp++)
+    FM->SetUp().LoadVariable(TString("Depol")+Form("%d[%f,%f]",dp,0.0,2.5));
 
   // category for spin
   FM->SetUp().LoadCategory(
@@ -63,16 +63,7 @@ void BruAsymmetry::AddNumerMod(Modulation * modu) {
   FM->SetUp().LoadParameter(ampName+"[0.0,-1,1]");
 
   // determine which depolarization factor to use
-  // - assumes LU, or DSIDIS twist 2
-  TString depolVar;
-  switch(modu->GetTwist()) {
-    // TODO: not yet in SimpleTree
-    //case 2: depolVar = "@Depol2[]"; break;
-    //case 3: depolVar = "@Depol3[]"; break;
-    default: 
-      fprintf(stderr,"WARNING: unknown depolarization factor; setting to 1\n");
-      depolVar = "1";
-  };
+  TString depolVar = modu->GetDepolIndex()>0 ? Form("@Depol%d[]",modu->GetDepolIndex()) : "1";
 
   // modulation, including polarization, depolarization, and spin sign
   formu = "@Pol[]*"+depolVar+"*@Spin_idx[]*"+modu->FormuBru();
@@ -127,9 +118,7 @@ void BruAsymmetry::AddDenomMod(Modulation * modu) {
 void BruAsymmetry::BuildPDF() {
 
   // build PDFstr
-  fprintf(stderr,"WARNING: depolarization factors not included in obsList (todo when depolarization is included)\n");
-  //TString obsList = "PhiH,PhiS,Pol,Depol2,Depol3,Spin_idx"; // TODO depolarization not yet in SimpleTree
-  TString obsList = "PhiH,PhiS,Pol,Spin_idx";
+  TString obsList = "PhiH,PhiS,Pol,Depol1,Depol2,Depol3,Depol4,Spin_idx";
   if(nDenomParams==0) {
     // if PDF has numerator amplitudes only, we can use RooComponentsPDF
     PDFstr = "RooComponentsPDF::PWfit(1,"; // PDF class::name ("+1" term ,

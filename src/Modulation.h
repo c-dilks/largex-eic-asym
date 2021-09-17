@@ -31,11 +31,12 @@ class Modulation : public TObject
     TString AsymmetryTitle();
 
     Int_t GetTwist() { return twist; };
+    Int_t GetDepolIndex() { return depol; };
     TString GetBaseString() { return baseStr; };
 
   private:
     TString baseStr,formuStr;
-    Int_t twist,ID;
+    Int_t twist,ID,depol;
     Int_t polarization;
     TString polT;
 

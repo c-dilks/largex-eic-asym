@@ -6,7 +6,11 @@
 
 grep -i error $PROOF_LOG/worker-*-*.log > tempolog.1
 sort tempolog.1 | uniq > tempolog.2
-grep --color -i error tempolog.2
-#grep --color -i error tempolog.1
+grep -i error tempolog.2 |\
+  grep -v MATRIX |\
+  grep -v VALUE |\
+  grep -v 'Floating Parameter' |\
+  grep -v 'retrieving message from input socket' |\
+  grep --color -i error
 rm tempolog.*
 

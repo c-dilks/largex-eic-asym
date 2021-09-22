@@ -11,16 +11,9 @@ R__LOAD_LIBRARY(LargexAsym)
  *     covariance matrix in the gaussian proposal function of a second,
  *     subsequent mcmc walk
  */
+// - IMPORTANT: execute with `brufit brufit.C'(....)'` (you can do `brufit -b -q`, if you want)
 
 void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
-
-  // load macros needed for PROOF
-  // - if you prefer not to use PROOF, adjust `HS::FIT::...::Go` calls in `BruAsymmetry::Fit`
-  // - proof logs are sent to $PROOF_LOG; make sure it is correct, your system may be different!
-  TString BRUCODE=gSystem->Getenv("BRUFIT");
-  TString macpath=BRUCODE+"/macros";
-  gROOT->SetMacroPath(
-    Form("%s:%s",gROOT->GetMacroPath(),(macpath).Data()));
 
   // instantiate brufit
   BruAsymmetry * B = new BruAsymmetry(bruDir,minimizer);
@@ -46,8 +39,11 @@ void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
 
   // load SimpleTrees
   B->LoadDataSets(
-      "../out/asym.root", // data to fit
-      "" // unpolarized MC data for likelihood normalization / acceptance correction (not used if unspecified)
+      "../out/asym.idx.root", // data to fit (must be an indexed tree, if using weights (see indexTree.C))
+      "", // unpolarized MC data for likelihood normalization approximation (not used if unspecified)
+      "data/Tweights.root", // Tweights file (from pullWeights.C)
+      "Weight", // weight branch name
+      "tree" // tree name (SimpleTree)
       );
 
   // optimizer hyperparameters (Markov Chain); not used if minimizer==minuit
@@ -60,7 +56,8 @@ void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
   B->MCMC_cov_burnin  = 0.1 * ((Double_t)B->MCMC_iter); // number to burn
   B->MCMC_cov_norm    = 1.0 / 0.03; // ~ 1/stepSize
 
-  // perform fit
+  // perform fit; to decide whether to run single or multi-threaded (with PROOF),
+  // see `src/BruAsymmetry.cpp` calls to `HS::FIT::PROCESS::{Here,Proof}::Go`
   B->Fit();
 
   // print MCMC acceptance rates

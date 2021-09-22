@@ -147,51 +147,36 @@ void BruAsymmetry::BuildPDF() {
 
 // load data and MC events from SimpleTree into FitManager
 void BruAsymmetry::LoadDataSets(
-  TString dataFileN, TString mcFileN, TString treename
-) {
+    TString dataFileN,
+    TString mcFileN,
+    TString weightFileN,
+    TString weightName,
+    TString treeName
+    )
+{
 
-  // read input trees
-  enum dataEnum {dt,mc}; // data, MC
-  infile[dt] = new TFile(dataFileN,"READ");
-  if(mcFileN=="") useMCint=false;
-  else {
-    useMCint=true;
-    infile[mc] = new TFile(mcFileN,"READ");
-  };
+  // load data tree
+  FM->LoadData(treeName,dataFileN);
 
-  TString outfileN[2];
-  int ffMax = useMCint ? 2:1;
-  for(int ff=0; ff<ffMax; ff++) {
-
-    // create output tree, initially cloned from input trees
-    intr[ff] = (TTree*) infile[ff]->Get(treename);
-    switch(ff) {
-      case dt: outfileN[ff] = outdir+"/treeData.root"; break;
-      case mc: outfileN[ff] = outdir+"/treeMC.root"; break;
-    };
-    outfile[ff] = new TFile(outfileN[ff],"RECREATE");
-    outtr[ff] = intr[ff]->CloneTree();
-
-    // add unique ID branch to output trees, write and close
-    Idx[ff] = 0;
-    IdxBr[ff] = outtr[ff]->Branch("Idx",&(Idx[ff]),"Idx/D");
-    for(Long64_t i=0; i<outtr[ff]->GetEntries(); i++) {
-      IdxBr[ff]->Fill();
-      Idx[ff] += 1;
-    };
-    outtr[ff]->Write(treename);
-    outfile[ff]->Close();
-    infile[ff]->Close();
-  };
-
-  // load trees into FitManager
-  FM->LoadData("tree",outfileN[dt]);
-  if(useMCint) FM->LoadSimulated("tree",outfileN[mc],"PWfit");
-  
-  if(useMCint)
-    this->PrintLog(Form("MC INTEGRATION ENABLED, using %s",mcFileN.Data()));
-  else
+  // load MC data, for normalization integral
+  if(mcFileN=="") {
     this->PrintLog("MC INTEGRATION DISABLED");
+    useMCint = false;
+  } else {
+    this->PrintLog(Form("MC INTEGRATION ENABLED, using %s",mcFileN.Data()));
+    useMCint = true;
+    FM->LoadSimulated(treeName,mcFileN,"PWfit");
+  };
+
+  // load weights (a Tweights.root file, likely from sPlot)
+  if(weightFileN=="") {
+    useWeights = false;
+  } else {
+    this->PrintLog(Form("WEIGHTS ENABLED, using %s",weightFileN.Data()));
+    useWeights = true;
+    FM->Data().LoadWeights(weightName+"Class",weightFileN,weightName+"Type");
+  };
+
 };
 
 

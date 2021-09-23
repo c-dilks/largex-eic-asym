@@ -13,7 +13,12 @@ R__LOAD_LIBRARY(LargexAsym)
  */
 // - IMPORTANT: execute with `brufit brufit.C'(....)'` (you can do `brufit -b -q`, if you want)
 
-void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
+void brufit(
+    TString dataTree="../out/asym.idx.root",
+    TString bruDir="bruspin",
+    TString minimizer="minuit"
+    )
+{
 
   // instantiate brufit
   BruAsymmetry * B = new BruAsymmetry(bruDir,minimizer);
@@ -39,7 +44,7 @@ void brufit(TString bruDir="bruspin", TString minimizer="minuit") {
 
   // load SimpleTrees
   B->LoadDataSets(
-      "../out/asym.idx.root", // data to fit (must be an indexed tree, if using weights (see indexTree.C))
+      dataTree, // data to fit (must be an indexed tree, if using weights (see indexTree.C))
       "", // unpolarized MC data for likelihood normalization approximation (not used if unspecified)
       "data/Tweights.root", // Tweights file (from pullWeights.C)
       "Weight", // weight branch name

@@ -17,8 +17,8 @@ BruAsymmetry::BruAsymmetry(TString outdir_, TString minimizer_)
 
 
   // variables
-  FM->SetUp().LoadVariable(TString("PhiH")+Form("[%f,%f]",-PIe,PIe));
-  FM->SetUp().LoadVariable(TString("PhiS")+Form("[%f,%f]",-PIe,PIe));
+  FM->SetUp().LoadVariable(TString("PhiH")+Form("[%f,%f]",-PI,PI));
+  FM->SetUp().LoadVariable(TString("PhiS")+Form("[%f,%f]",-PI,PI));
   FM->SetUp().LoadVariable(TString("Pol")+Form("[%f,%f]",-1.0,1.0));
   for(int dp=1; dp<=4; dp++)
     FM->SetUp().LoadVariable(TString("Depol")+Form("%d[%f,%f]",dp,0.0,2.5));

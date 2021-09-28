@@ -229,9 +229,11 @@ void BruAsymmetry::Fit() {
 
   // fit settings:
   // -optimize: calculate and cache formulas; suitable for RooComponentsPDF
-  // -number of parellel threads
+  // -number of parellel threads for the likelihood calculation (choose either
+  //  this multi-threading method, or use PROOF below for one fit = one thread; don't
+  //  choose both methods, unless you have a lot of threads available)
   FM->SetUp().AddFitOption(RooFit::Optimize(1));
-  FM->SetUp().AddFitOption(RooFit::NumCPU(nWorkers));
+  //FM->SetUp().AddFitOption(RooFit::NumCPU(nWorkers));
 
 
   // MINOS uncertainty estimation

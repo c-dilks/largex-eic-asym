@@ -35,11 +35,18 @@ void brufit(
   B->BuildPDF();
 
   // set binning scheme (see quantiles.C)
+  /*
   // - bin boundaries (size = number_of_bins + 1)
   Double_t Xbins[7] = { 0.050, 0.061, 0.076, 0.094, 0.119, 0.172, 0.820 };
   // - bin schemes (2nd argument = number_of_bins)
   B->Bin("X",6,Xbins);
   // - check binning definition
+  B->PrintBinScheme();
+  */
+  Double_t Xbins[5] = { 0.0, 0.25, 0.4, 0.75, 1.0 };
+  Double_t Zbins[4] = { 0.0, 0.4, 0.6, 1.0 };
+  B->Bin("X",4,Xbins);
+  B->Bin("Z",3,Zbins);
   B->PrintBinScheme();
 
   // load SimpleTrees

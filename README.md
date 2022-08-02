@@ -1,4 +1,4 @@
-# Largex-eic-asym
+# largex-eic-asym
 
 ## Building
 

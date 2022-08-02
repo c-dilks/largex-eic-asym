@@ -1,7 +1,4 @@
 # Largex-eic-asym
-test
-test
-test
 
 ## Building
 
